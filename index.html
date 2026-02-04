@@ -9,7 +9,6 @@
     :root{
       --bg1:#0b0b12;
       --bg2:#16162a;
-      --card: rgba(255,255,255,.06);
       --border: rgba(255,255,255,.12);
       --text:#f4f4ff;
       --muted:#b7b9d6;
@@ -234,41 +233,13 @@
     .glow span{ font-size: 34px; }
 
     @media (max-width: 420px){
-      .card{
-        padding: 18px 14px;
-        border-radius: 20px;
-      }
-
-      .photo{
-        width: 118px;
-        height: 118px;
-      }
-
-      .glow{
-        width: 76px;
-        height: 76px;
-        margin-bottom: 12px;
-      }
-
-      .letter{
-        font-size: 15px;
-        padding: 14px 12px;
-      }
-
-      .actions{
-        gap: 10px;
-      }
-
-      button{
-        min-width: 100%;
-        width: 100%;
-        padding: 14px 14px;
-        font-size: 15px;
-      }
-
-      .footer{
-        font-size: 12px;
-      }
+      .card{ padding: 18px 14px; border-radius: 20px; }
+      .photo{ width: 118px; height: 118px; }
+      .glow{ width: 76px; height: 76px; margin-bottom: 12px; }
+      .letter{ font-size: 15px; padding: 14px 12px; }
+      .actions{ gap: 10px; }
+      button{ min-width: 100%; width: 100%; padding: 14px 14px; font-size: 15px; }
+      .footer{ font-size: 12px; }
     }
 
     @media (max-width: 340px){
@@ -306,26 +277,30 @@
 
       <div class="letter" id="letter">
         <p>
-          Yinede Aklım Kaldı...
+          Yinede Aklımda Kaldı...
           <br><br>
           <b>Ben seni üzmek istemem.</b>
-          Çünkü senin bir gülüşün bile içimde kocaman bir huzur bırakıyor.
+          Çünkü senin bir gülüşün bile içimde kocaman        bir huzur bırakıyor.
           <br><br>
           Bazen kelimeler yanlış anlaşılabiliyor…
           ama ben şunu biliyorum:
           <b>Sen benim en güzel şansımsın.</b>
           <br><br>
           Sadece bil istedim…
-          <b>İyi ki varsın güzelimm</b> 💗
+          <b>İyi ki varsın.</b> 💗
         </p>
       </div>
 
       <div class="actions" id="actions">
         <button class="primary" id="smile">Gülümse 🙂</button>
-        <button class="ghost" id="more">Bir Şey Daha...</button>
+        <button class="ghost" id="more">Bir şey daha…</button>
+        <button class="ghost" id="musicBtn">Müzik Aç 🎶</button>
       </div>
 
       <div class="footer" id="foot">— Bu sayfa sadece sana ❤️</div>
+
+      <!-- 🎵 MÜZİK -->
+      <audio id="bgMusic" src="muzik.mp3" loop></audio>
     </main>
   </div>
 
@@ -336,6 +311,10 @@
     const letter = document.getElementById("letter");
     const foot = document.getElementById("foot");
     const actions = document.getElementById("actions");
+
+    const musicBtn = document.getElementById("musicBtn");
+    const bgMusic = document.getElementById("bgMusic");
+    let musicPlaying = false;
 
     function dropHearts(count = 18){
       for(let i=0;i<count;i++){
@@ -350,7 +329,6 @@
       }
     }
 
-    // ✅ Ortak toast fonksiyonu
     function showToast(msg){
       const toast = document.createElement("div");
       toast.textContent = msg;
@@ -388,10 +366,28 @@
       }, 5000);
     }
 
-    // ✅ 1) Gülümse butonu (AYNI KALDI)
+    // ✅ MÜZİK BUTONU
+    musicBtn.addEventListener("click", async () => {
+      try{
+        if(!musicPlaying){
+          await bgMusic.play();
+          musicPlaying = true;
+          musicBtn.textContent = "Müzik Kapat 🔇";
+          dropHearts(10);
+        }else{
+          bgMusic.pause();
+          musicPlaying = false;
+          musicBtn.textContent = "Müzik Aç 🎶";
+        }
+      }catch(e){
+        alert("Kanka tarayıcı izin vermedi 😅 Butona tekrar bas.");
+      }
+    });
+
+    // ✅ 1) Gülümse butonu (Aynı kaldı)
     smile.addEventListener("click", ()=>{
       dropHearts(26);
-      showToast("Gülümsemek Sana Çok Yakışıyor Hep Gülümse");
+      showToast("Gülmek Sana Çok Yakışıyor Hep Gülümse 💗");
     });
 
     // ✅ 2) Bir şey daha... basınca yeni sayfa + yeni buton
@@ -400,41 +396,60 @@
 
       letter.innerHTML = `
         <p>
-          Bu da benden sana bir şiir
+          Bir şey daha söyleyeyim…
           <br><br>
-          Gece olunca
-          her şey susuyor…
-          bir tek içimde sen konuşuyorsun.
+          beni yanlış anlama lütfen
+          İlk sevgili olduğumuzda yakışıklım bebeğim gibi
+          Kelimeler vardı hatta harfleri uzundu
+          şimdi sadece canım ve bitanem kelimeleri
+          Kaldı bu iki kelime kaldığından beri benden
+          Biraz soğudunu düşündüm ama
+          ben seni hep aynı yerden seviyorum.
+          Çünkü ben seni mesajlarınla değil…
+          <b>kalbinle</b> seviyorum.
           <br><br>
-          Yıldızlar bile
-          senin gözlerin kadar parlamıyor.
-          ay bile senin kadar güzel değil
-          <br><br>
-          Gözlerim kapansa bile
-          kalbim seni düşünmeden
-          bu geceyi bitiremiyor…
-          <br><br></p>
-         <h1>İyi Ki Varsın Hazalımm..</h1>
-          <br>
           Ne olursa olsun,
-          ben senin yanındayım bunu unutma😘</p>
-          <br>
-          <b>Seni Çok Seviyorum Yavrum</b>
+          ben senin yanında olmayı seçiyorum.
+          <br><br>
+          <b>Hazalımm… seni çok seviyorum.</b> ❤️
+        </p>
       `;
 
       foot.textContent = "— Ben burdayım, hep. 😘";
 
-      // Eski butonları kaldır
+      // Butonları değiştir (Müzik butonu kalsın)
       actions.innerHTML = `
-        <button class="primary" id="secondSmile">İyi ki varsın ❤️</button>
+        <button class="primary" id="secondBtn">İyi ki varsın ❤️</button>
+        <button class="ghost" id="musicBtn2">${musicPlaying ? "Müzik Kapat 🔇" : "Müzik Aç 🎶"}</button>
       `;
 
-      // Yeni butona tıklayınca
-      const secondSmile = document.getElementById("secondSmile");
-      secondSmile.addEventListener("click", ()=>{
+      // Yeni iyi ki varsın butonu
+      const secondBtn = document.getElementById("secondBtn");
+      secondBtn.addEventListener("click", ()=>{
         dropHearts(26);
         showToast("Sende İyi Ki Varsın Hayatımın Anlamı ❤️");
       });
+
+      // Müzik butonu 2 (aynı işi yapar)
+      const musicBtn2 = document.getElementById("musicBtn2");
+      musicBtn2.addEventListener("click", async () => {
+        try{
+          if(!musicPlaying){
+            await bgMusic.play();
+            musicPlaying = true;
+            musicBtn2.textContent = "Müzik Kapat 🔇";
+            dropHearts(10);
+          }else{
+            bgMusic.pause();
+            musicPlaying = false;
+            musicBtn2.textContent = "Müzik Aç 🎶";
+          }
+        }catch(e){
+          alert("Kanka tarayıcı izin vermedi 😅 Butona tekrar bas.");
+        }
+      });
+
+      // Eski "Bir şey daha" butonunu zaten kaldırdık
     });
 
     setTimeout(()=>dropHearts(10), 700);
